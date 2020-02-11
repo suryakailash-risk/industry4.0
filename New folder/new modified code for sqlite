@@ -1,0 +1,68 @@
+import sqlite3
+
+# def ak(records):
+# 	s2=""
+# 	for row1 in records:
+# 	s=str(row1)
+# 	if s.startswith("u'"):
+# 	s2=s.replace("u'","'",1)
+# 	return s2
+def fun1(records):
+        list1=[]
+        c=""
+        for row1 in records:
+            s=str(row1)
+            list1.append(s)
+        for i in list1:
+            n=len(i)
+            a=3
+            b=n-3
+            temp=[]
+            temp=i
+            c=temp[a:b]
+        return c
+def readSqliteTable():
+        sqliteConnection = sqlite3.connect('//home//pi//sqlitedb//kart.db')
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='1'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op1=fun1(records)
+        print(op1)
+
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='2'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op2=fun1(records)
+        print(op2)
+
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='3'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op3=fun(records)
+        print(op3)
+        
+        cursor.close()
+readSqliteTable()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+import sqlite3
+
+def readSqliteTable():
+        sqliteConnection = sqlite3.connect('D:\\software\\sqlite\\dbsqlite\\kartdb.db')
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_select_query = """select RFID from kart where status='off' AND sno='1'"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        print("row")
+        for row in records:
+            print(row)
+        sqlite_select_query = """select RFID from kart where status='off' AND sno='2'"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        print("row1")
+        for row in records:
+            print(row)
+        sqlite_select_query = """select RFID from kart where status='off' AND sno='3'"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        print("row2")
+        for row in records:
+            print(row)
+        cursor.close()
+readSqliteTable()

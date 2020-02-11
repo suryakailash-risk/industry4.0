@@ -1,0 +1,132 @@
+import sqlite3
+import paho.mqtt.client as mqttClient
+import time
+import serial
+
+def serial():
+    data = serial.Serial(
+                        port='/dev/ttyS0',
+                        baudrate = 9600,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS
+                        )
+    try:     
+       #while 1:
+             print "Place the card"
+             x=data.read(12)    
+             print x
+
+    except KeyboardInterrupt:
+           data.close()
+
+# def ak(records):
+#       s2=""
+#       for row1 in records:
+#           s=str(row1)
+#           if s.startswith("u'"):
+#               s2=s.replace("u'","'",1)
+#       return s2
+key = x
+def fun1(records):
+        list1=[]
+        c=""
+        for row1 in records:
+            s=str(row1)
+            list1.append(s)
+        for i in list1:
+            n=len(i)
+            a=3
+            b=n-3
+            temp=[]
+            temp=i
+            c=temp[a:b]
+        return c
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$mqtt cloud (#off1) $$$$$$$$$$$$$$$$$$$$$$$$$$$$
+def mqttdata1():
+        broker_address= "tailor.cloudmqtt.com"
+        port = 13534
+        user = "whzdnyzv"
+        password = "kAbninqGe4us"       
+        client = mqttClient.Client("Python")               #create new instance
+        client.username_pw_set(user, password=password)    #set username and password
+        client.connect(broker_address, port=port)          #connect to broker
+        client.loop_start()
+        try:
+                value = "#off1"
+                client.publish("esp/test",value)
+        except KeyboardInterrupt:
+                client.disconnect()
+                client.loop_stop()
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$mqttdata2 (off2) $$$$$$$$$$$$$$$$$$$$$$$)
+def mqttdata2():
+        broker_address= "tailor.cloudmqtt.com"
+        port = 13534
+        user = "whzdnyzv"
+        password = "kAbninqGe4us"
+        client.username_pw_set(user, password=password)    #set username and password
+        client.connect(broker_address, port=port)          #connect to broker
+        client = mqttClient.Client("Python")               #create new instance
+        client.loop_start()
+        try:
+                value = "#off2"
+                client.publish("esp/test",value)
+        except KeyboardInterrupt:
+                client.disconnect()
+                client.loop_stop()
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$mqttdata 3 (off3)$$$$$$$$$$$$$$$$$$$
+def mqttdata3():
+        broker_address= "tailor.cloudmqtt.com"
+        port = 13534
+        user = "whzdnyzv"
+        password = "kAbninqGe4us"
+        client = mqttClient.Client("Python")               #create new instance
+        client.username_pw_set(user, password=password)    #set username and password
+        client.connect(broker_address, port=port)          #connect to broker
+        client.loop_start()
+        try:
+                value = "#off3"
+                client.publish("esp/test",value)
+        except KeyboardInterrupt:
+                client.disconnect()
+                client.loop_stop()
+
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$sqlite code$$$$$$$$$$$$$$$$$$$$$$
+def readSqliteTable():
+        sqliteConnection = sqlite3.connect('//home//pi//sqlitedb//kart.db')
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='1'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op1=fun1(records)
+        print(op1)
+        
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='2'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op2=fun1(records)
+        print(op2)
+
+        sqlite_select_query = "select RFID from kart where status='on' AND sno='3'"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        op3=fun1(records)
+        print(op3)
+        if op1==key:
+            mqttdata1()
+        elif op2==key:
+            mqttdata2()
+        elif op3==key:
+            mqttdata3()
+        cursor.close()
+serial()
+readSqliteTable()
+
+            
+            
+        
+        
+        
+        
+
